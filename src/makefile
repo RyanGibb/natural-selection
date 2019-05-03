@@ -3,15 +3,15 @@ CC = clang
 CFLAGS = -c -g -Wall -Wextra
 LFLAGS = -Wall -Wextra
 
-all: sim
+all: natural_selection_simulator
 clean:
-	rm -f sim *.o
+	rm -f natural_selection_simulator *.o
 
-sim: sim.o terminal_display.o structures.o
-	${CC} ${LFLAGS} sim.o terminal_display.o structures.o -o sim
+natural_selection_simulator: main.o terminal_display.o structures.o
+	${CC} ${LFLAGS} main.o terminal_display.o structures.o -o natural_selection_simulator
 
-sim.o: sim.c
-	${CC} ${CFLAGS} sim.c -o sim.o
+main.o: main.c
+	${CC} ${CFLAGS} main.c -o main.o
 
 terminal_display.o: terminal_display.c
 	${CC} ${CFLAGS} terminal_display.c -o terminal_display.o

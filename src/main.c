@@ -3,23 +3,21 @@
 
 #include "display.h"
 
-float tile_per_start_prey = 20;
-float tile_per_start_predators = 200;
-float tile_per_start_food = 2;
-float tile_per_growth = 300;
+int x_size = 200;
+int y_size = 50;
+int start_carns = 10;
+int start_herbs = 200;
+int start_food = 400;
+
+float growth_rate = 0.5;
 float atttrition = 1;
 float eat_food_health = 10;
 float eat_prey_health_modifier = 0.6;
-
-bool stop = false;
-
-unsigned int wait_ms = 500;
-
 float starting_health = 100;
 float reproduce_health = 200;
 
-const int DEFAULT_X_SIZE = 200;
-const int DEFAULT_Y_SIZE = 50;
+bool stop = false;
+unsigned int wait_ms = 500;
 
 int num_carns = 0;
 int num_herbs = 0;
@@ -139,7 +137,9 @@ int run(World* world){
 int main(int argc, char* argv[]) {
   (void) argc;
   (void) argv;
-  World* world = make_world(20, 10, 0, 0, 0);
+  World* world = make_world(y_size, x_size,
+                            start_carns, start_herbs, start_food,
+                            starting_health);
   run(world);
   free_world(world);
   return 0;

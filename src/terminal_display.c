@@ -5,26 +5,40 @@
 #include "display.h"
 #include "structures.h"
 
-void horizontal_line(int x_size) {
+static void horizontal_line(int x_size) {
   for (int i = 0; i < x_size + 2; i++) {
-    printf("-");
+    putchar('-');
   }
-  printf("\n");
+  putchar('\n');
 }
 
-char* display_tile(Tile* tile) {
-  // TODO is NULL check and exists check needed?
-  if (tile->creature != NULL && tile->creature->exists && tile->creature->type == Carn) {
-    return "H";
-  }
-  else if (tile->creature != NULL && tile->creature->exists && tile->creature->type == Herb) {
-    return "C";
-  }
-  else if (tile->food == true) {
-    return ".";
+Node* display_node(Point p, Node* node) {
+  if (node != NULL  && p.x == node->loc.x && p.y == node->loc.y) {
+    // only print 'top' entity
+    Type top = node->entity.type;
+    while (node != NULL && p.x == node->loc.x && p.y == node->loc.y) {
+      if (node->entity.type < top) {
+        top = node->entity.type;
+      }
+      node = node->next;
+    }
+    if (top == Carn) {
+      putchar('C');
+    }
+    else if (top == Herb) {
+      putchar('H');
+    }
+    else if (top == Bush) {
+      putchar('.');
+    }
+    else {
+      putchar('X');
+    }
+    return node;
   }
   else {
-    return " ";
+    putchar(' ');
+    return node;
   }
 }
 
@@ -36,13 +50,16 @@ void display_world(World* world, int num_carns, int num_herbs, int num_food) {
   system("cls");
 #endif
   printf("Carnivore: %d \tHerbivore: %d \tFood: %d\n", num_carns, num_herbs, num_food);
-  horizontal_line(world->x_size);
-  for (int y = 0; y < world->y_size; y ++) {
-    printf("|");
-    for (int x = 0; x < world->x_size; x ++) {
-      printf("%s", display_tile(world->map[y][x]));
+  horizontal_line(world->dimensions.x);
+  Node* node = world->head;
+  for (int y = 0; y < world->dimensions.y; y++) {
+    putchar('|');
+    for (int x = 0; x < world->dimensions.x; x++) {
+      Point p = {.y=y, .x=x};
+      node = display_node(p, node);
     }
-    printf("|\n");
+    putchar('|');
+    putchar('\n');
   }
-  horizontal_line(world->x_size);
+  horizontal_line(world->dimensions.x);
 }

@@ -5,7 +5,7 @@
 
 int x_size = 200;
 int y_size = 50;
-int start_carns = 10;
+int start_carns = 100;
 int start_herbs = 200;
 int start_food = 400;
 
@@ -137,7 +137,8 @@ int run(World* world){
 int main(int argc, char* argv[]) {
   (void) argc;
   (void) argv;
-  World* world = make_world(y_size, x_size,
+  Point dimensions = {.y=y_size, .x=x_size};
+  World* world = make_world(dimensions,
                             start_carns, start_herbs, start_food,
                             starting_health);
   run(world);

@@ -2,6 +2,7 @@
 #include <time.h>
 
 #include "display.h"
+#include "structures.h"
 
 int x_size = 200;
 int y_size = 50;
@@ -39,7 +40,31 @@ int num_food = 0;
 //     return moves
 
 int tick(World* world) {
-  (void) world;
+  Node* newHead = NULL;
+  Node* node = world->head;
+  while (node != NULL) {
+    node->loc.x = (node->loc.x + 1) % world->dimensions.x;
+    Entity entity = node->entity;
+    Type type = entity.type;
+    switch(type) {
+      case Carn: {
+        Animal* animal = entity.animal;
+        break;
+      }
+      case Herb:{
+        Animal* animal = entity.animal;
+        break;
+      }
+      case Bush:{
+        Plant* plant = entity.plant;
+        break;
+      }
+    }
+    Node* newNode = node;
+    node = node->next;
+    newHead = insert_node(newHead, newNode);
+  }
+  world->head = newHead;
   return 0;
   //   global prey, predators
   // new_predators = []
